@@ -1,0 +1,226 @@
+<environment>
+<BuildVersion Spin="73" Version="45.45.0.99" />
+<build_version spin="65" version="45.45.0.99" />
+
+  <paths>
+      <fsroot>sdk/fsroot/ramdisk/</fsroot>
+      <toolchain>sdk/toolchain/staging_dir/</toolchain>
+  </paths>
+
+ 
+ <components>
+
+    <hybrid>
+      <dependencies>
+          sdk, fcgi, libxml2, yajl, spawn-fcgi, pcre, lighttpd, e2fsprogs, libgpg-error, libgcrypt,  libsoup, gssdp, gupnp, gupnp-av, dbus, log4c, mongoose, jansson, tinyxml, gst-plugins-good, dbus, fontconfig, freetype2.3.3, opensource, logger, dtcp, gst-plugins, rdklogger, mediaframework, mediastreamer, iarm, iarmbus, media_interface_lib, closedcaption, devicesettings, diagnostics, net-snmp, openssl, trm-common, mediaframework-halinstall, mediaframework-hal, mediaframework-bin, mediaframework-halsnmp, mediaframework-dvrmgrhal, hxdbus, mp2sip, servicemanager
+      </dependencies>
+      <image_name_modifier>HYB</image_name_modifier>
+    </hybrid>
+
+    <default>
+      <dependencies>sdk, fcgi, libxml2, yajl, spawn-fcgi, pcre, lighttpd, e2fsprogs, libgpg-error, libgcrypt,  libsoup, gssdp, gupnp, dbus, log4c, mongoose, jansson, tinyxml, gst-plugins-good, opensource, dtcp, gst-plugins, logger, mediaframework, mediastreamer, iarm, media_interface_lib, ri, closedcaption, diagnostics, fontconfig,dbus, hxdbus, mp2sip, servicemanager
+      </dependencies>
+    </default>
+  </components>
+
+    <additional_environs>
+    	<environ>
+	    <name>MFR_NAME</name>
+		<value>USE_BRCM_MFR</value>
+    	</environ>
+    	<environ>
+	    <name>MFR_LIB_NAME</name>
+    	    <value>-lbroadcomlib</value>
+    	</environ>
+    	<environ>
+	    <name>MFR_LIB_PATH</name>
+    	    <value>../mediaframework/platform/soc/mfrlibs/broadcomlib</value>
+    	</environ>
+    </additional_environs>
+
+    <include path="build/components/sdk/rdk_env.xml" />
+    <include path="build/components/opensource/rdk_env.xml" />
+    <include path="iarm/rdk_env.xml" />
+    <include path="iarmbus/rdk_env.xml" />
+    <include path="mediaframework/rdk_env.xml" />
+    <include path="mediaframework/rmfApp/rdk_env.xml" />
+    <include path="mediaframework/platform/soc/halsnmp/rdk_env.xml" />
+    <include path="mediaframework/platform/soc/dvrmgr/rdk_env.xml" />
+    <include path="mediaframework/platform/soc/soc_qamsource/hal/hal_include/rdk_env.xml" />
+    <include path="mediaframework/platform/soc/soc_qamsource/rdk_env.xml" />
+    <include path="trm/rdk_env.xml" />
+    <include path="opensource/qt/source/platform/rdk_env.xml" />
+    <include path="dtcp/rdk_env.xml" />
+    <include path="gst-plugins/generic/src/rdk_env.xml" />
+    <include path="mediastreamer/rdk_env.xml" />
+    <include path="media_interface_lib/rdk_env.xml" />
+    <include path="trm/common/rdk_env.xml" />
+    <include path="sys_mon_tools/sys_resource/rdk_env.xml" />
+    <include path="closedcaption/platform/broadcom/rdk_env.xml" />
+    <include path="devicesettings/rdk_env.xml" />
+    <include path="diagnostics/build_scripts/rdk_env.xml" />
+    <include path="logger/rdk_env.xml" />
+	<include path="rdklogger/rdk_env.xml" />
+	<include path="build/packager_scripts/rdk_env.xml" />
+
+	<include path="hxdbus/rdk_env.xml" />
+	<include path="mp2sip/rdk_env.xml" />
+	<include path="servicemanager/build_scripts/rdk_env.xml" />
+
+  <packaging_instructions>
+        <package name="VBN-RELEASE">
+    <script name="createoptBackDir.sh" type="shell" />
+      </package>
+    <package name="PROD-RELEASE">
+    <script name="createoptBackDir.sh" type="shell" />
+      <script function="createMonoImage" name="createMonoImageXI3" type="python" />
+      </package>
+    <package name="DEV-RELEASE">
+    <script name="createoptBackDir.sh" type="shell" />
+      <script function="createMonoImage" name="createMonoImageXI3" type="python" />
+      </package>
+    <package name="VBN">
+    <script function="createVersion" name="createVersion" type="python" />
+      </package>
+    <package name="DEV">
+    <script function="createVersion" name="createVersion" type="python" />
+      <script function="mergeScripts" name="mergeScripts" type="python" />
+      <script name="fileCopy.sh" type="shell" />
+      <script function="qtclean" name="cleanup" type="python" />
+      <script name="SICache.sh" type="shell" />
+      <script function="cleanupUneededFiles" name="cleanup" type="python" />
+      <script name="createStartupScripts.sh" type="shell" />
+      <script name="copypoddriver.sh" type="shell" />
+      <script name="copyecmbins.sh" type="shell" />
+      <script name="adjustrcuser.sh" type="shell" />
+      <script name="createTarBall.sh" type="shell" />
+      </package>
+    <package name="NIGHTLY">
+    <script function="creatFsrootBackup" name="createFsrootBackup" type="python" />
+      <script function="InitDEVPackage" name="initPackage" type="python" />
+      <script name="DEV" type="package_map" />
+      <script function="packager_upload" name="deploy" type="python" />
+      <script function="InitVBNPackage" name="initPackage" type="python" />
+      <script name="VBN" type="package_map" />
+      <script function="packager_upload" name="deploy" type="python" />
+      <script function="InitPRODPackage" name="initPackage" type="python" />
+      <script name="PROD" type="package_map" />
+      <script function="packager_upload" name="deploy" type="python" />
+      </package>
+    <package name="ALL-RELEASE">
+    <script function="creatFsrootBackup" name="createFsrootBackup" type="python" />
+      <script function="InitDEVPackage" name="initPackage" type="python" />
+      <script function="createVersion" name="createVersion" type="python" />
+      <script name="DEV-RELEASE" type="package_map" />
+      <script function="packager_upload" name="deploy" type="python" />
+      <script function="InitVBNPackage" name="initPackage" type="python" />
+      <script function="createVersion" name="createVersion" type="python" />
+      <script name="VBN-RELEASE" type="package_map" />
+      <script function="packager_upload" name="deploy" type="python" />
+      <script function="InitPRODPackage" name="initPackage" type="python" />
+      <script function="createVersion" name="createVersion" type="python" />
+      <script name="PROD-RELEASE" type="package_map" />
+      <script function="packager_upload" name="deploy" type="python" />
+      </package>
+    <package name="DEV-rmfclient">
+    <script name="DEV" type="package_map" />
+      </package>
+    <package name="DEV-hybrid">
+    <script function="createVersion" name="createVersion" type="python" />
+      <script function="mergeScripts" name="mergeScripts" type="python" />
+      <script name="fileCopy.sh" type="shell" />
+      <script function="qtclean" name="cleanup" type="python" />
+      <script name="SICache.sh" type="shell" />
+      <script function="cleanupUneededFiles" name="cleanup" type="python" />
+      <script name="createStartupScripts.sh" type="shell" />
+      <script name="copypoddriver.sh" type="shell" />
+      <script name="copyecmbins.sh" type="shell" />
+      <script name="adjustrcuser.sh" type="shell" />
+      <script name="createTarBall.sh" type="shell" />
+      </package>
+    <package name="PROD">
+    <script function="createVersion" name="createVersion" type="python" />
+      </package>
+    </packaging_instructions>
+
+  <oem_device>
+    <model>brcm97445</model>
+  </oem_device>
+
+    <platform>
+      <vendor>bcm</vendor>
+      <soc>broadcom</soc>
+      <device>xg1</device>
+    </platform>
+
+    <deploy extensions="tgz,md5">
+        <cqa image_type="customImages.txt" ip="0.0.0.0" />
+        <vbn image_type="customImages.txt" ip="0.0.0.0" />
+        <dev image_type="customImages.txt" ip="0.0.0.0" />
+        <prod image_type="customImages.txt" ip="0.0.0.0" />
+    </deploy>
+  
+
+  <PrebuiltsRepository MajorVersion="1" Packaging="tgz" RepositoryId="brcm_brcm_xg1_brcm7435" Url="scp://162.150.25.151/opt/nexus/sonatype-work/nexus/storage/brcm_brcm_xg1_brcm7435/" />
+
+    <PrebuiltsDependencies>
+        <Prebuilt Name="SDK">
+            <Location Name="DEVICE-BINARYONLY" RelativePath="" Url="http://svn.sj.broadcom.com/svn/comcast/brcm_trunk/rdk/devices/broadcom/brcmxg1/trunk/bin/binaryOnly/" />
+            <Location Name="DEVICE-BUILD-SCRIPTS" RelativePath="" Url="http://svn.sj.broadcom.com/svn/comcast/brcm_trunk/rdk/devices/broadcom/common/trunk/build_scripts/" />
+            <Location Name="DEVICE-SDK-PATCHES" RelativePath="" Url="http://svn.sj.broadcom.com/svn/comcast/brcm_trunk/rdk/devices/broadcom/brcmxg1/trunk/patches/" />
+            <Location Name="DEVICE-STARTUP-SCRIPTS" RelativePath="" Url="http://svn.sj.broadcom.com/svn/comcast/brcm_trunk/rdk/devices/broadcom/brcmxg1/trunk/" />
+            <Location Name="SDK" RelativePath="" Url="http://svn.sj.broadcom.com/svn/comcast/brcm_trunk/sdk" />
+            <Location Name="PROJECT-SDK-BUILD-SCRIPTS" RelativePath="" Url="http://svn.sj.broadcom.com/svn/comcast/brcm_trunk/rdk/components/comcast/build_scripts/soc/broadcom/common/trunk/" />
+            <Location Name="COMPONENT-BUILD-SCRIPT" RelativePath="build/components/sdk/rdk_build.sh" Url="" />
+            <Location Name="COMPONENT-BUILD-CONF" RelativePath="build/components/sdk/rdk_env.xml" Url="" />
+        </Prebuilt>
+        <Prebuilt Name="OPENSOURCE">
+            <Location Name="BUILD_SCRIPT" RelativePath="build/components/opensource/rdk_build.sh" Url="" />
+            <Location Name="BUILD_CONF" RelativePath="build/components/opensource/rdk_env.xml" Url="" />
+        </Prebuilt>
+        <Prebuilt Name="QT">
+            <Location Name="BUILD_SCRIPT" RelativePath="opensource/qt/source/platform/rdk_build.sh" Url="" />
+            <Location Name="BUILD_CONF" RelativePath="opensource/qt/source/platform/rdk_env.xml" Url="" />
+        </Prebuilt>
+      </PrebuiltsDependencies>
+
+  <DeployPrebuilts Enable="0" Path="prebuilts" />
+
+   <PrebuiltsComponents>
+     <Component ArtifactId="linux" PrebuiltName="SDK">
+       <ArtifactItem Path="workXG1/Refsw/linux" />
+     </Component>
+     <Component ArtifactId="uclinux-rootfs" PrebuiltName="SDK">
+       <ArtifactItem Path="workXG1/Refsw/uclinux-rootfs" />
+     </Component>
+     <Component ArtifactId="obj-97435" PrebuiltName="SDK">
+       <ArtifactItem Path="workXG1/Refsw/obj.97435" />
+     </Component>
+     <Component ArtifactId="tools" PrebuiltName="SDK">
+       <ArtifactItem Path="workXG1/tools" />
+     </Component>
+     <Component ArtifactId="sdk" PrebuiltName="SDK">
+       <ArtifactItem Path="workXG1/svn/sdk/*" />
+     </Component>
+     <Component ArtifactId="opensource" PrebuiltName="OPENSOURCE">
+       <ArtifactItem Path="opensource/bin" />
+       <ArtifactItem Path="opensource/include" />
+       <ArtifactItem Path="opensource/lib" />
+       <ArtifactItem Path="opensource/share" />
+       <ArtifactItem Path="opensource/sbin" />
+       <ArtifactItem Path="opensource/fontconfig" />
+       <ArtifactItem Path="opensource/jquery" />
+     </Component>
+     <Component ArtifactId="qt" PrebuiltName="QT">
+        <ArtifactItem Path="opensource/qt/stage" />
+        <ArtifactItem Path="opensource/qt/fonts" />
+        <ArtifactItem Path="opensource/qt/apps_helpers.sh" />
+        <ArtifactItem Path="opensource/qt/source/platform/rdk_build.sh" />
+        <ArtifactItem Path="opensource/qt/source/platform/rdk_env.xml" />
+        <ArtifactItem Path="opensource/qt/setenv.sh" />
+        <ArtifactItem Path="opensource/qt/source/README" />
+        <ArtifactItem Path="opensource/qt/source/platform/platformenv.sh" />
+     </Component>
+   </PrebuiltsComponents>
+
+</environment>
